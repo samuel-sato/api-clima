@@ -4,11 +4,7 @@ const handlebars = require('express-handlebars')
 const bodyparser = require('body-parser')
 const axios = require('axios')
 
-axios.get('https://goweather.herokuapp.com/weather/Curitiba').then((data)=>{
-    //console.log(data.data)
-}).catch((erro)=>{
-    console.log(erro)
-})
+var teste = {}
 
 //handlebars
 app.engine('handlebars', handlebars({
@@ -21,29 +17,29 @@ app.engine('handlebars', handlebars({
 app.set('view engine', 'handlebars')
 
 //bodyparser
-app.use(bodyparser.urlencoded({extended:false}))
+app.use(bodyparser.urlencoded({extended:true}))
 app.use(bodyparser.json())
 
 
 app.get('/',(req,res)=>{
     res.render('home')
 })
-
-//app.get('/resultado',(req,res)=>{
-
-  //  res.render('admin/resultado',{data})
-//})
-
-app.get('/buscar',(req,res)=>{
-    axios.get('https://goweather.herokuapp.com/weather/'+req.body.city).then((data)=>{
-    //console.log(data.data)
-    console.log(axios.get('https://goweather.herokuapp.com/weather/'+req.body.city))
-    res.render('admin/resultado', {data: data.data})
-
-    }).catch((erro)=>{
-    console.log(erro)
-    })
-
+app.get('/resultado',(req,res)=>{
+    res.render('admin/resultado',{data: teste})
 })
 
-app.listen(3000, console.log("ta rolando"))
+app.post('/buscar',(req,res)=>{
+
+    axios.get('https://goweather.herokuapp.com/weather/'+req.body.city).then((data)=>{
+    console.log(data.data)
+    console.log('-----'+req.body.city)
+    teste = data.data
+    //console.log(teste)
+    //res.redirect('/resultado',)
+    res.render('admin/resultado',{data: data.data})
+    }).catch((erro)=>{
+        console.log(erro)
+    })
+})
+
+app.listen(3001, console.log("ta rolando"))
