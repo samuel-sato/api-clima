@@ -31,12 +31,11 @@ app.get('/resultado',(req,res)=>{
 app.post('/buscar',(req,res)=>{
 
     axios.get('https://goweather.herokuapp.com/weather/'+req.body.city).then((data)=>{
-    console.log(data.data)
+    //console.log(data.data)
     console.log('-----'+req.body.city)
     teste = data.data
     //console.log(teste)
-    //res.redirect('/resultado',)
-    res.render('admin/resultado',{data: data.data})
+    res.render('home',{data: data.data, city:req.body.city})
     }).catch((erro)=>{
         console.log(erro)
     })
